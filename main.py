@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox as messagebox
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -6,34 +7,31 @@ import matplotlib.pyplot as plt
 
 def pobierz_amplitude():
     global amplituda
-    digit = entry.get()
+    digit = par_wej.get()
     if digit.isdigit():
-        print("Amplituda=", digit)
         amplituda = float(digit)
     else:
-        print("Please enter a valid digit.")
+        messagebox.showerror("Error", "Wpisz poprawną wartość!!!")
 
 
 def pobierz_okres():
     global okres
     global skok
-    digit = entry.get()
+    digit = par_wej.get()
     if digit.isdigit():
-        print("Okres=", digit)
         okres = float(digit)
         skok = float(okres)/100
     else:
-        print("Please enter a valid digit.")
+        messagebox.showerror("Error", "Wpisz poprawną wartość!!!")
 
 
 def pobierz_liczba_okresow():
     global liczba_okresow
-    digit = entry.get()
+    digit = par_wej.get()
     if digit.isdigit():
-        print("Liczba okresów=", digit)
         liczba_okresow = float(digit)
     else:
-        print("Please enter a valid digit.")
+        messagebox.showerror("Error", "Wpisz poprawną wartość!!!")
 
 
 def tworzenie_syg_wej():
@@ -97,18 +95,36 @@ rodzaj_pobudzenia.set(0)
 czas = np.array([])
 syg_wej = np.array([])
 
+tk.LabelFrame(window, text="Sygnał wejściowy", width=215, height=315, bg='white').place(x=0, y=0)
+tk.LabelFrame(window, text="Parametry układu", width=215, height=315, bg='white').place(x=215, y=0)
 
-tk.Radiobutton(window, state='normal', text='Prostokątny', variable=rodzaj_pobudzenia, value=0).place(x=0, y=0)
-tk.Radiobutton(window, state='normal', text='Trójkątny', variable=rodzaj_pobudzenia, value=1).place(x=0, y=20)
-tk.Radiobutton(window, state='normal', text='Harmoniczny', variable=rodzaj_pobudzenia, value=2).place(x=0, y=40)
 
-entry = tk.Entry(window)
+tk.Radiobutton(window, state='normal', text='Prostokątny', variable=rodzaj_pobudzenia, bg='white', value=0)\
+    .place(x=10, y=20)
+tk.Radiobutton(window, state='normal', text='Trójkątny', variable=rodzaj_pobudzenia, bg='white', value=1)\
+    .place(x=10, y=40)
+tk.Radiobutton(window, state='normal', text='Harmoniczny', variable=rodzaj_pobudzenia, bg='white', value=2)\
+    .place(x=10, y=60)
 
-tk.Button(window, text="Amplituda", command=pobierz_amplitude, width=10, height=2).place(x=1, y=130)
-tk.Button(window, text="Okres [s]", command=pobierz_amplitude, width=10, height=2).place(x=92, y=130)
-tk.Button(window, text="Liczba okresów", command=pobierz_liczba_okresow, width=23, height=2).place(x=1, y=180)
-tk.Button(window, text="wykres", command=wykres, width=23, height=2).place(x=500, y=500)
+par_wej = tk.Entry(window, bd=5, bg='#D3D3D3', width=30)
 
-entry.place(x=0, y=100)
+tk.Label(window, bg='white', text='Tu wpisz wartość:')\
+    .place(x=3, y=80)
+tk.Label(window, bg='white', text='Wybierz jaki parametr chcesz zmienić:')\
+    .place(x=3, y=130)
+tk.Label(window, bg='white', text='Wciśnij żeby narysować wykres:')\
+    .place(x=3, y=240)
+
+tk.Button(window, bg='#D3D3D3', text="Amplituda", command=pobierz_amplitude, width=13, height=2)\
+    .place(x=3, y=150)
+tk.Button(window, bg='#D3D3D3', text="Okres [s]", command=pobierz_amplitude, width=13, height=2)\
+    .place(x=107, y=150)
+tk.Button(window, bg='#D3D3D3', text="Liczba okresów", command=pobierz_liczba_okresow, width=28, height=2)\
+    .place(x=3, y=195)
+tk.Button(window, bg='#D3D3D3', text="Wykres sygnału wejściowego.", command=wykres, width=28, height=2)\
+    .place(x=3, y=270)
+
+
+par_wej.place(x=10, y=102)
 
 window.mainloop()
