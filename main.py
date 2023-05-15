@@ -3,11 +3,22 @@ import tkinter.ttk
 import numpy as np
 
 
-def get_digit():
+def pobierz_amplitude():
+    global amplituda
     digit = entry.get()
-    label.config(text=digit)
     if digit.isdigit():
-        print("The entered digit is:", digit)
+        print("Amplituda=", digit)
+        amplituda = digit
+    else:
+        print("Please enter a valid digit.")
+
+
+def pobierz_okres():
+    global okres
+    digit = entry.get()
+    if digit.isdigit():
+        print("Okres=", digit)
+        okres = digit
     else:
         print("Please enter a valid digit.")
 
@@ -21,24 +32,22 @@ L = 0
 J = 0
 k = 0
 KT = 0
+amplituda = 0
+okres = 0
 zmienna = ''
 
 rodzaj_pobudzenia = tk.IntVar()
 rodzaj_pobudzenia.set(0)
 
-tk.Radiobutton(window, state='normal', text='Prostokątny', variable=rodzaj_pobudzenia, value=0).pack(anchor='nw', padx=0, pady=2)
-tk.Radiobutton(window, state='active', text='Trójkątny', variable=rodzaj_pobudzenia, value=1).pack(anchor='nw', padx=0, pady=4)
-tk.Radiobutton(window, state='normal', text='Harmoniczny', variable=rodzaj_pobudzenia, value=2).pack(anchor='nw', padx=0, pady=6)
+tk.Radiobutton(window, state='normal', text='Prostokątny', variable=rodzaj_pobudzenia, value=0).place(x=0, y=0)
+tk.Radiobutton(window, state='active', text='Trójkątny', variable=rodzaj_pobudzenia, value=1).place(x=0, y=20)
+tk.Radiobutton(window, state='normal', text='Harmoniczny', variable=rodzaj_pobudzenia, value=2).place(x=0, y=40)
 
 entry = tk.Entry(window)
-entry.pack()
 
-label = tk.Label(window, text='halo')
+tk.Button(window, text="Amplituda", command=pobierz_amplitude, width=10, height=2).place(x=0, y=130)
+tk.Button(window, text="Okres [rad]", command=pobierz_amplitude, width=10, height=2).place(x=90, y=130)
 
-button = tk.Button(window, text="Get Digit", command=get_digit)
-
-entry.pack()
-button.pack()
-label.pack()
+entry.place(x=0, y=100)
 
 window.mainloop()
