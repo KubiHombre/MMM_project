@@ -96,7 +96,6 @@ def tworzenie_syg_wej():
 
     czas = np.linspace(0, okres * liczba_okresow, int(okres * liczba_okresow * 1000))
     print(len(czas))
-    i = 0.0
 
     if rodzaj_pobudzenia.get() == 2:
         for i in range(0, len(czas)):
