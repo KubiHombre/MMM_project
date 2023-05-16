@@ -94,6 +94,7 @@ def tworzenie_syg_wej():
         for i in range(0, len(czas)):
             syg_wej = np.append(syg_wej, amplituda * math.sin(czas[i]/okres * 2 * math.pi))
     if rodzaj_pobudzenia.get() == 1:
+        # blbbldasflad
         while i < liczba_okresow:
             n = 0.0
             while n < okres:
