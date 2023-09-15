@@ -135,48 +135,56 @@ def wykres():
     tworzenie_syg_wej()
     plt.plot(czas, syg_wej)
     plt.axis([0, czas[len(czas) - 1], -1.05 * amplituda, 1.05 * amplituda])
+    plt.ylabel('Napięcie U')
+    plt.xlabel('Czas t')
     plt.show()
 
 
 def wykresy_sym_predkosc_kat():
     data_predkosc = np.array([])
-    for i in range(0, 1000):
-        a = syg_wej[i] * KM * (R * k - i * i * J * R) / (
-                    (R * k - i * i * J * R) * (R * k - i * i * J * R) + (-i * i * L * J * k + k * L + KM * KT) * (
-                        -i * i * L * J * k + k * L + KM * KT))
-        b = syg_wej[i] * KM * i * (k * L + KM * KT - i * i * L * J) / (
-                    (R * k - i * i * J * R) * (R * k - i * i * J * R) + (-i * i * L * J * k + k * L + KM * KT) * (
-                        -i * i * L * J * k + k * L + KM * KT))
-        complex_num_1 = complex(a, b)
-        data_predkosc = np.append(data_predkosc, complex_num_1)
+    data_prad = np.array([])
+    data_kat = np.array([])
 
-    x = [ele.real for ele in data_predkosc]
-    y = [ele.imag for ele in data_predkosc]
-    plt.plot(x, y, '-.r*')
-    plt.ylabel('Imaginary')
-    plt.xlabel('Real')
+    # zerowe warunki początkowe
+    data_prad = np.append(data_prad, 0)
+    data_predkosc = np.append(data_predkosc, 0)
+    data_kat = np.append(data_kat, 0)
+
+    for i in range(0, len(czas)-1):
+        nast_prad = data_prad[i] + (syg_wej[i] / L - R * data_prad[i] / L - k/L * data_predkosc[i]) * skok #poprawić k
+        data_prad = np.append(data_prad, nast_prad)
+        nast_predkosc = data_predkosc[i] + (k * data_prad[i] / J - k * data_kat[i]/J) * skok #poprawić k
+        data_predkosc = np.append(data_predkosc, nast_predkosc)
+        nast_kat = data_kat[i] + (data_predkosc[i]) * skok #poprawić k
+        data_kat = np.append(data_kat, nast_kat)
+
+    plt.plot(czas, data_predkosc)
+    plt.ylabel('Predkosc')
+    plt.xlabel('Czas')
     plt.show()
 
 
 def wykresy_sym_prad():
-    global data_prad
-    global complex_num_2
+    data_predkosc = np.array([])
     data_prad = np.array([])
-    for i in range(0, 1000):
-        c = syg_wej[i] * (k - J * i * i) * (R * k - i * i * J * R) / (
-                    (R * k - i * i * J * R) * (R * k - i * i * J * R) + (-i * i * L * J * k + k * L + KM * KT) * (
-                        -i * i * L * J * k + k * L + KM * KT))
-        d = syg_wej[i] * (k - J * i * i) * i * (k * L + KM * KT - i * i * L * J) / (
-                    (R * k - i * i * J * R) * (R * k - i * i * J * R) + (-i * i * L * J * k + k * L + KM * KT) * (
-                        -i * i * L * J * k + k * L + KM * KT))
-        complex_num_1 = complex(c, d)
-        data_prad = np.append(data_prad, complex_num_1)
+    data_kat = np.array([])
 
-    x = [ele.real for ele in data_prad]
-    y = [ele.imag for ele in data_prad]
-    plt.plot(x, y, '-.r*')
-    plt.ylabel('Imaginary')
-    plt.xlabel('Real')
+    # zerowe warunki początkowe
+    data_prad = np.append(data_prad, 0)
+    data_predkosc = np.append(data_predkosc, 0)
+    data_kat = np.append(data_kat, 0)
+
+    for i in range(0, len(czas)-1):
+        nast_prad = data_prad[i] + (syg_wej[i] / L - R * data_prad[i] / L - k/L * data_predkosc[i]) * skok #poprawić k
+        data_prad = np.append(data_prad, nast_prad)
+        nast_predkosc = data_predkosc[i] + (k * data_prad[i] / J - k * data_kat[i]/J) * skok #poprawić k
+        data_predkosc = np.append(data_predkosc, nast_predkosc)
+        nast_kat = data_kat[i] + (data_predkosc[i]) * skok #poprawić k
+        data_kat = np.append(data_kat, nast_kat)
+
+    plt.plot(czas, data_prad)
+    plt.ylabel('Prąd')
+    plt.xlabel('Czas')
     plt.show()
 
 
