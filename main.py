@@ -138,23 +138,72 @@ def wykres():
     plt.show()
 
 
+def wykresy_sym_predkosc_kat():
+    data_predkosc = np.array([])
+    for i in range(0, 1000):
+        a = syg_wej[i] * KM * (R * k - i * i * J * R) / (
+                    (R * k - i * i * J * R) * (R * k - i * i * J * R) + (-i * i * L * J * k + k * L + KM * KT) * (
+                        -i * i * L * J * k + k * L + KM * KT))
+        b = syg_wej[i] * KM * i * (k * L + KM * KT - i * i * L * J) / (
+                    (R * k - i * i * J * R) * (R * k - i * i * J * R) + (-i * i * L * J * k + k * L + KM * KT) * (
+                        -i * i * L * J * k + k * L + KM * KT))
+        complex_num_1 = complex(a, b)
+        data_predkosc = np.append(data_predkosc, complex_num_1)
+
+    x = [ele.real for ele in data_predkosc]
+    y = [ele.imag for ele in data_predkosc]
+    plt.plot(x, y, '-.r*')
+    plt.ylabel('Imaginary')
+    plt.xlabel('Real')
+    plt.show()
+
+
+def wykresy_sym_prad():
+    global data_prad
+    global complex_num_2
+    data_prad = np.array([])
+    for i in range(0, 1000):
+        c = syg_wej[i] * (k - J * i * i) * (R * k - i * i * J * R) / (
+                    (R * k - i * i * J * R) * (R * k - i * i * J * R) + (-i * i * L * J * k + k * L + KM * KT) * (
+                        -i * i * L * J * k + k * L + KM * KT))
+        d = syg_wej[i] * (k - J * i * i) * i * (k * L + KM * KT - i * i * L * J) / (
+                    (R * k - i * i * J * R) * (R * k - i * i * J * R) + (-i * i * L * J * k + k * L + KM * KT) * (
+                        -i * i * L * J * k + k * L + KM * KT))
+        complex_num_1 = complex(c, d)
+        data_prad = np.append(data_prad, complex_num_1)
+
+    x = [ele.real for ele in data_prad]
+    y = [ele.imag for ele in data_prad]
+    plt.plot(x, y, '-.r*')
+    plt.ylabel('Imaginary')
+    plt.xlabel('Real')
+    plt.show()
+
+
 window = tk.Tk(className=' ')  # implementacja okna
 window.geometry("777x395")  # ustawienie wielkości okna
 
 # Parametry układu
+a = 0
+b = 0
 skok = 0.001
 R = 0.0
 L = 0.0
 J = 0.0
 k = 0.0
 KT = 0.0
+KM = 5
 amplituda = 1.0
 okres = 1.0
 liczba_okresow: float = 2.0
 rodzaj_pobudzenia = tk.IntVar()
 rodzaj_pobudzenia.set(0)
+prad_czy_predoksc = tk.IntVar()
+prad_czy_predoksc.set(0)
 czas = np.array([])
+czas_wykres = np.array([])
 syg_wej = np.array([])
+syg_wykres = np.array([])
 
 # wstawienie obrazu układu
 image = tk.PhotoImage(file="bmp.png")
@@ -234,11 +283,11 @@ l_o_t = tk.Label(window, text=f'Liczba okresów={liczba_okresow}', bg='white')
 l_o_t.place(x=310, y=360)
 
 # przyciski symulacja
-tk.Button(window, bg='#D3D3D3', text="Wykres prądu płynącego w obwodzie.", width=47, height=3) \
+tk.Button(window, bg='#D3D3D3', text="Wykres prądu płynącego w obwodzie.", command=wykresy_sym_prad, width=47, height=3) \
     .place(x=434, y=276)
-tk.Button(window, bg='#D3D3D3', text="Wykres prędkości kątowej wału.", width=47, height=3) \
+tk.Button(window, bg='#D3D3D3', text="Wykres prędkości kątowej wału.", command=wykresy_sym_predkosc_kat, width=47,
+          height=3) \
     .place(x=434, y=335)
-
 
 # główna pętla programu
 window.mainloop()
