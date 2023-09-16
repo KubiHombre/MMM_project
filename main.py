@@ -50,7 +50,7 @@ def pobierz_r():
 def pobierz_l():
     global L
     digit = par_ukladu.get()
-    if digit.isdigit():
+    if digit.isdigit() and digit != '0':
         L = float(digit)
         l_t.configure(text=f'L={L}')
     else:
@@ -60,7 +60,7 @@ def pobierz_l():
 def pobierz_j():
     global J
     digit = par_ukladu.get()
-    if digit.isdigit():
+    if digit.isdigit() and digit != '0':
         J = float(digit)
         j_t.configure(text=f'J={J}')
     else:
@@ -141,6 +141,7 @@ def wykres():
 
 
 def wykresy_sym_predkosc_kat():
+    tworzenie_syg_wej()
     data_predkosc = np.array([])
     data_prad = np.array([])
     data_kat = np.array([])
@@ -151,11 +152,11 @@ def wykresy_sym_predkosc_kat():
     data_kat = np.append(data_kat, 0)
 
     for i in range(0, len(czas)-1):
-        nast_prad = data_prad[i] + (syg_wej[i] / L - R * data_prad[i] / L - k/L * data_predkosc[i]) * skok #poprawić k
+        nast_prad = data_prad[i] + (syg_wej[i] / L - R * data_prad[i] / L - KT / L * data_predkosc[i]) * skok
         data_prad = np.append(data_prad, nast_prad)
-        nast_predkosc = data_predkosc[i] + (k * data_prad[i] / J - k * data_kat[i]/J) * skok #poprawić k
+        nast_predkosc = data_predkosc[i] + (KM * data_prad[i] / J - k * data_kat[i]/J) * skok
         data_predkosc = np.append(data_predkosc, nast_predkosc)
-        nast_kat = data_kat[i] + (data_predkosc[i]) * skok #poprawić k
+        nast_kat = data_kat[i] + (data_predkosc[i]) * skok
         data_kat = np.append(data_kat, nast_kat)
 
     plt.plot(czas, data_predkosc)
@@ -165,6 +166,7 @@ def wykresy_sym_predkosc_kat():
 
 
 def wykresy_sym_prad():
+    tworzenie_syg_wej()
     data_predkosc = np.array([])
     data_prad = np.array([])
     data_kat = np.array([])
@@ -192,14 +194,14 @@ window = tk.Tk(className=' ')  # implementacja okna
 window.geometry("777x395")  # ustawienie wielkości okna
 
 # Parametry układu
-a = 0
-b = 0
+a = 1
+b = 1
 skok = 0.001
-R = 0.0
-L = 0.0
-J = 0.0
-k = 0.0
-KT = 0.0
+R = 1.0
+L = 1.0
+J = 1.0
+k = 1.0
+KT = 1.0
 KM = 5
 amplituda = 1.0
 okres = 1.0
